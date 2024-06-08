@@ -1,0 +1,39 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div>
+        <label for="username">Username</label>
+        <input
+        type="text"
+        name="username"
+        formControlName="username"
+        />
+        <div *ngIf="username?.invalid">
+            <div *ngIf="username?.hasError('required')">
+                Username is required
+            </div>
+        </div>
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input
+        type="password"
+        name="password"
+        formControlName="password"
+        />
+        <div *ngIf="password?.invalid">
+            <div *ngIf="password?.hasError('required')">
+                Password is required
+            </div>
+            <div *ngIf="password?.hasError('minlength')">
+                Password must be at least 6 characters
+            </div>
+        </div>
+    </div>
+    <div>
+        <button type="submit">Sign up</button>
+    </div>
+    <div *ngIf="isLoginFailed">
+        <div>
+            {{ errorMessage }}
+        </div>
+    </div>
+</form>

@@ -1,0 +1,7 @@
+<div *ngIf="currentUser">
+    <h1>{{ currentUser.username }}</h1>
+    <h2>{{ currentUser.email }}</h2>
+</div>
+<div *ngIf="!currentUser">
+    <p>Please login.</p>
+</div>
