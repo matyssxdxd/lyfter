@@ -1,7 +1,8 @@
 package com.lyfter.backend.controller;
 
 import com.lyfter.backend.model.Exercise;
-import com.lyfter.backend.model.MuscleGroup;
+import com.lyfter.backend.model.MuscleGroupEnum;
+import com.lyfter.backend.payload.request.ExerciseRequest;
 import com.lyfter.backend.service.ExerciseCRUDService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,19 +30,17 @@ public class ExerciseController {
 
     @GetMapping("/find")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> getExercisesById(@RequestParam int id) {
+    public ResponseEntity<?> getExercises(
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false) String muscleGroup) {
         try {
-            return ResponseEntity.ok(exerciseCRUDService.getExerciseById(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/find")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> getExercisesByMuscleGroup(@RequestParam MuscleGroup muscleGroup) {
-        try {
-            return ResponseEntity.ok(exerciseCRUDService.getExercisesByMuscleGroup(muscleGroup));
+            if (id != null) {
+                return ResponseEntity.ok(exerciseCRUDService.getExerciseById(id));
+            } else if (muscleGroup != null) {
+                return ResponseEntity.ok(exerciseCRUDService.getExercisesByMuscleGroup(MuscleGroupEnum.valueOf(muscleGroup)));
+            } else {
+                return ResponseEntity.badRequest().body("Either 'id' or 'muscleGroup' parameter must be provided.");
+            }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -49,9 +48,9 @@ public class ExerciseController {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> addExercise(@Valid @RequestBody Exercise exercise) {
+    public ResponseEntity<?> addExercise(@Valid @RequestBody ExerciseRequest request) {
         try {
-            exerciseCRUDService.addExercise(exercise);
+            exerciseCRUDService.addExercise(request);
             return ResponseEntity.ok("Exercise added successfully.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -60,9 +59,9 @@ public class ExerciseController {
 
     @PatchMapping("/update")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> updateExercise(@Valid @RequestBody Exercise exercise, @RequestParam int id) {
+    public ResponseEntity<?> updateExercise(@Valid @RequestBody ExerciseRequest request, @RequestParam int id) {
         try {
-            exerciseCRUDService.updateExerciseById(exercise, id);
+            exerciseCRUDService.updateExerciseById(request, id);
             return ResponseEntity.ok("Exercise updated successfully.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

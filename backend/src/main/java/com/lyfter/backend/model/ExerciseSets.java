@@ -6,32 +6,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "workouts")
-public class Workout {
+@Table(name = "exercise_sets")
+public class ExerciseSets {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotNull
-    private String name;
+    private Integer reps;
 
     @NotNull
-    private String description;
-
-    @OneToMany
-    private List<Exercise> exercises;
+    private float weight;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToMany(mappedBy = "workout")
-    private List<WorkoutLog> workoutLogs;
+    @JoinColumn(name = "exercise_details_id")
+    private ExerciseDetails exerciseDetails;
 }

@@ -1,10 +1,12 @@
 package com.lyfter.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,8 +41,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany
-    private List<Workout> workouts;
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Workout> workouts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<WorkoutLog> workoutLogs = new ArrayList<>();
 
     public User(String username, String email, String password) {
         setUsername(username);

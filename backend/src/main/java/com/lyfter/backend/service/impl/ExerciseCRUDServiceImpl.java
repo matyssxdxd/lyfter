@@ -2,18 +2,28 @@ package com.lyfter.backend.service.impl;
 
 import com.lyfter.backend.model.Exercise;
 import com.lyfter.backend.model.MuscleGroup;
+import com.lyfter.backend.model.MuscleGroupEnum;
+import com.lyfter.backend.payload.request.ExerciseRequest;
 import com.lyfter.backend.repo.ExerciseRepository;
+import com.lyfter.backend.repo.MuscleGroupRepository;
 import com.lyfter.backend.service.ExerciseCRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ExerciseCRUDServiceImpl implements ExerciseCRUDService {
 
     @Autowired
     ExerciseRepository exerciseRepo;
+
+    @Autowired
+    MuscleGroupRepository muscleGroupRepo;
+    @Autowired
+    private MuscleGroupRepository muscleGroupRepository;
 
     @Override
     public List<Exercise> getAllExercises() throws Exception {
@@ -31,10 +41,10 @@ public class ExerciseCRUDServiceImpl implements ExerciseCRUDService {
     }
 
     @Override
-    public List<Exercise> getExercisesByMuscleGroup(MuscleGroup muscleGroup) throws Exception {
+    public List<Exercise> getExercisesByMuscleGroup(MuscleGroupEnum muscleGroup) throws Exception {
         if (muscleGroup == null) throw new Exception("Muscle group must be provided.");
 
-        List<Exercise> ex = exerciseRepo.findByMuscleGroupsContaining(muscleGroup);
+        List<Exercise> ex = exerciseRepo.findByMuscleGroupsName(muscleGroup);
 
         if (ex.isEmpty()) throw new Exception("Exercises with muscle group " + muscleGroup + " not found.");
 
@@ -42,24 +52,46 @@ public class ExerciseCRUDServiceImpl implements ExerciseCRUDService {
     }
 
     @Override
-    public void addExercise(Exercise exercise) throws Exception {
-        if (exercise == null) throw new Exception("Exercise must be provided.");
-        if (exerciseRepo.findByName(exercise.getName())) throw new Exception("Exercise with name " + exercise.getName() + " already exists.");
+    public void addExercise(ExerciseRequest request) throws Exception {
+        if (request == null) throw new Exception("Exercise must be provided.");
+        if (exerciseRepo.existsByName(request.getName())) throw new Exception("Exercise with name " + request.getName() + " already exists.");
+
+        Set<MuscleGroup> muscleGroups = new HashSet<>();
+
+        for (MuscleGroupEnum muscleGroup : request.getMuscleGroups()) {
+            MuscleGroup mg = muscleGroupRepository.findByName(muscleGroup)
+                    .orElseThrow(() -> new Exception("Muscle group " + muscleGroup + " not found."));
+            muscleGroups.add(mg);
+        }
+
+        Exercise exercise = new Exercise();
+
+        exercise.setName(request.getName());
+        exercise.setDescription(request.getDescription());
+        exercise.setMuscleGroups(muscleGroups);
 
         exerciseRepo.save(exercise);
     }
 
     @Override
-    public void updateExerciseById(Exercise exercise, Integer id) throws Exception {
-        if (exercise == null) throw new Exception("Exercise must be provided.");
+    public void updateExerciseById(ExerciseRequest request, Integer id) throws Exception {
+        if (request == null) throw new Exception("Exercise must be provided.");
         if (id < 0) throw new Exception("Exercise id must be greater than 0.");
 
         Exercise ex = exerciseRepo.findById(id)
                 .orElseThrow(() -> new Exception("Exercise with id " + id + " was not found."));
 
-        ex.setName(exercise.getName());
-        ex.setDescription(exercise.getDescription());
-        ex.setMuscleGroups(ex.getMuscleGroups());
+        Set<MuscleGroup> muscleGroups = new HashSet<>();
+
+        for (MuscleGroupEnum muscleGroup : request.getMuscleGroups()) {
+            MuscleGroup mg = muscleGroupRepository.findByName(muscleGroup)
+                    .orElseThrow(() -> new Exception("Muscle group " + muscleGroup + " not found."));
+            muscleGroups.add(mg);
+        }
+
+        ex.setName(request.getName());
+        ex.setDescription(request.getDescription());
+        ex.setMuscleGroups(muscleGroups);
 
         exerciseRepo.save(ex);
     }
