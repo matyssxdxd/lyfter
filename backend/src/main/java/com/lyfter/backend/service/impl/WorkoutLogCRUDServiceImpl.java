@@ -1,13 +1,15 @@
 package com.lyfter.backend.service.impl;
 
-import com.lyfter.backend.model.WorkoutLog;
+import com.lyfter.backend.model.*;
+import com.lyfter.backend.payload.request.ExerciseSetsRequest;
 import com.lyfter.backend.payload.request.WorkoutLogRequest;
-import com.lyfter.backend.repo.WorkoutLogRepository;
+import com.lyfter.backend.repo.*;
 import com.lyfter.backend.service.WorkoutLogCRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,6 +17,18 @@ public class WorkoutLogCRUDServiceImpl implements WorkoutLogCRUDService {
 
     @Autowired
     private WorkoutLogRepository workoutLogRepository;
+
+    @Autowired
+    private WorkoutRepository workoutRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ExerciseRepository exerciseRepository;
+
+    @Autowired
+    private ExerciseSetsRepository exerciseSetsRepository;
 
     @Override
     public List<WorkoutLog> getAllWorkoutLogs() throws Exception {
@@ -48,6 +62,42 @@ public class WorkoutLogCRUDServiceImpl implements WorkoutLogCRUDService {
 
     @Override
     public void saveWorkoutLog(WorkoutLogRequest request) throws Exception {
+        if (request == null) throw new Exception("Workout log must be provided.");
+
+        Workout workout = workoutRepository.findById(request.getWorkoutId())
+                .orElseThrow(() -> new Exception("There is no workout with id " + request.getWorkoutId()));
+
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new Exception("There is no user with id " + request.getUserId()));
+
+        WorkoutLog workoutLog = new WorkoutLog();
+
+        workoutLog.setWorkout(workout);
+        workoutLog.setUser(user);
+        workoutLog.setDate(LocalDate.now());
+        workoutLog.setLength(request.getLength());
+
+        workoutLogRepository.save(workoutLog);
+
+        List<ExerciseSets> exerciseSets = new ArrayList<>();
+
+        for (ExerciseSetsRequest es : request.getExerciseSets()) {
+            ExerciseSets exerciseSet = new ExerciseSets();
+
+            Exercise exercise = exerciseRepository.findById(es.getExerciseId())
+                    .orElseThrow(() -> new Exception("There is no exercise with id " + es.getExerciseId()));
+
+            exerciseSet.setExercise(exercise);
+            exerciseSet.setReps(es.getReps());
+            exerciseSet.setWeight(es.getWeight());
+
+            exerciseSets.add(exerciseSet);
+        }
+
+        for (ExerciseSets exerciseSet : exerciseSets) {
+            exerciseSet.setWorkoutLog(workoutLog);
+            exerciseSetsRepository.save(exerciseSet);
+        }
 
     }
 

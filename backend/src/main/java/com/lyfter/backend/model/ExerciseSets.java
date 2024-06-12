@@ -24,6 +24,10 @@ public class ExerciseSets {
     private float weight;
 
     @ManyToOne
-    @JoinColumn(name = "exercise_details_id")
-    private ExerciseDetails exerciseDetails;
+    @JoinColumn(name = "exercise_id")
+    private Exercise exercise;
+
+    @ManyToOne
+    @JoinColumn(name = "workout_log_id")
+    private WorkoutLog workoutLog;
 }

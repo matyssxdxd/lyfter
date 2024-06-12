@@ -30,7 +30,7 @@ public class WorkoutLog {
     private User user;
 
     @OneToMany(mappedBy = "workoutLog")
-    private List<ExerciseDetails> exerciseDetails = new ArrayList<>();
+    private List<ExerciseSets> exerciseSets = new ArrayList<>();
 
     private LocalDate date;
 
