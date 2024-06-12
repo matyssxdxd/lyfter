@@ -7,8 +7,8 @@ import com.lyfter.backend.payload.request.LoginRequest;
 import com.lyfter.backend.payload.request.SignupRequest;
 import com.lyfter.backend.payload.response.MessageResponse;
 import com.lyfter.backend.payload.response.UserInfoResponse;
-import com.lyfter.backend.repo.RoleRepo;
-import com.lyfter.backend.repo.UserRepo;
+import com.lyfter.backend.repo.RoleRepository;
+import com.lyfter.backend.repo.UserRepository;
 import com.lyfter.backend.security.jwt.JwtUtils;
 import com.lyfter.backend.security.service.UserDetailsImpl;
 import jakarta.validation.Valid;
@@ -37,10 +37,10 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepo userRepo;
+    UserRepository userRepository;
 
     @Autowired
-    RoleRepo roleRepo;
+    RoleRepository roleRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -73,11 +73,11 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepo.existsByUsername(signUpRequest.getUsername())) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (userRepo.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
         }
 
@@ -90,20 +90,20 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepo.findByName(RoleEnum.ROLE_USER)
+            Role userRole = roleRepository.findByName(RoleEnum.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
-                        Role adminRole = roleRepo.findByName(RoleEnum.ROLE_ADMIN)
+                        Role adminRole = roleRepository.findByName(RoleEnum.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
 
                         break;
                     default:
-                        Role userRole = roleRepo.findByName(RoleEnum.ROLE_USER)
+                        Role userRole = roleRepository.findByName(RoleEnum.ROLE_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
                 }
@@ -111,7 +111,7 @@ public class AuthController {
         }
 
         user.setRoles(roles);
-        userRepo.save(user);
+        userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
