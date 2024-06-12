@@ -2,15 +2,12 @@ package com.lyfter.backend.service.impl;
 
 import com.lyfter.backend.model.Exercise;
 import com.lyfter.backend.model.MuscleGroup;
-import com.lyfter.backend.model.Role;
-import com.lyfter.backend.model.RoleEnum;
 import com.lyfter.backend.repo.ExerciseRepository;
 import com.lyfter.backend.service.ExerciseCRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ExerciseCRUDServiceImpl implements ExerciseCRUDService {

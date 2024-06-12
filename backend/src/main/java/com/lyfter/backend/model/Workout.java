@@ -22,8 +22,11 @@ public class Workout {
     @NotNull
     private String name;
 
+    @NotNull
+    private String description;
+
     @OneToMany
-    private List<WorkoutExercise> exercises;
+    private List<Exercise> exercises;
 
     @ManyToOne
     private User user;
