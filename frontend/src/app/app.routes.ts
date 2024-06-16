@@ -5,6 +5,8 @@ import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BoardUserComponent } from './board-user/board-user.component';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { LogComponent } from './log/log.component';
 
 export const routes: Routes = [
     {
@@ -24,12 +26,20 @@ export const routes: Routes = [
         component: ProfileComponent
     },
     {
-        path: "User",
+        path: "user",
         component: BoardUserComponent
     },
     {
         path: "admin",
         component: BoardAdminComponent
+    },
+    {
+        path: "dashboard",
+        component: DashboardComponent
+    },
+    {
+        path: "log",
+        component: LogComponent
     },
     {
         path: "",

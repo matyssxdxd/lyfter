@@ -1,26 +1,25 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
 import { StorageService } from '../_services/storage.service';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css'
 })
-export class HomeComponent {
-  isLoggedIn = false;
+export class DashboardComponent {
+  isLoggedIn: boolean = false;
 
   constructor(private router: Router, private storageService: StorageService) {}
-
 
   ngOnInit(): void {
     this.isLoggedIn = this.storageService.isLoggedIn();
 
-    if (this.isLoggedIn) {
-      this.router.navigate(["/dashboard"]);
+    if (!this.isLoggedIn) {
+      this.router.navigate(["/login"]);
     }
   }
 }

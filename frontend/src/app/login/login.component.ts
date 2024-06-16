@@ -57,7 +57,7 @@ export class LoginComponent {
   
           this.isLoginFailed = false;
           this.isLoggedIn = true;
-          this.router.navigate(['/home']);
+          this.router.navigate(['/dashboard']);
         },
         error: err => {
           this.errorMessage = err.error.errorMessage;
