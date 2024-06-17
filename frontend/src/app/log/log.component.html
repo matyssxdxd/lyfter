@@ -1,1 +1,27 @@
-<p>log works!</p>
+    <ul *ngIf="!isWorkoutSelected">
+      <li *ngFor="let workout of workouts" (click)="selectWorkout(workout.id)">
+        {{ workout.name }}
+      </li>
+    </ul>
+  
+    <div *ngIf="isWorkoutSelected">
+      <form [formGroup]="form" (ngSubmit)="logWorkout()">
+        <div formArrayName="exercises">
+          <div *ngFor="let exercise of exercisesFormArray.controls; let i = index" [formGroupName]="i">
+            <h3>{{ exercises[i].name }}</h3>
+            <div formArrayName="sets">
+              <div *ngFor="let set of setsFormArray(i).controls; let j = index" [formGroupName]="j">
+                <label for="weight">Weight</label>
+                <input type="number" formControlName="weight">
+                <label for="reps">Reps</label>
+                <input type="number" formControlName="reps">
+                <button type="button" (click)="removeSet(i, j)">Remove Set</button>
+              </div>
+              <button type="button" (click)="addSet(i)">Add Set</button>
+            </div>
+          </div>
+        </div>
+        <button type="submit">Log Workout</button>
+      </form>
+    </div>
+  

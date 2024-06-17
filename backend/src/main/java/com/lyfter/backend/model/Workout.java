@@ -1,5 +1,6 @@
 package com.lyfter.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -30,8 +31,10 @@ public class Workout {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "workout")
+    @JsonIgnore
     private List<WorkoutLog> workoutLogs;
 }
