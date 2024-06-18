@@ -26,7 +26,7 @@ public class Workout {
     @NotNull
     private String description;
 
-    @OneToMany
+    @ManyToMany
     private List<Exercise> exercises;
 
     @ManyToOne

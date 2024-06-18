@@ -2,6 +2,7 @@ package com.lyfter.backend.service.impl;
 
 import com.lyfter.backend.model.*;
 import com.lyfter.backend.payload.request.ExerciseSetsRequest;
+import com.lyfter.backend.payload.request.SetsRequest;
 import com.lyfter.backend.payload.request.WorkoutLogRequest;
 import com.lyfter.backend.repo.*;
 import com.lyfter.backend.service.WorkoutLogCRUDService;
@@ -81,17 +82,19 @@ public class WorkoutLogCRUDServiceImpl implements WorkoutLogCRUDService {
 
         List<ExerciseSets> exerciseSets = new ArrayList<>();
 
-        for (ExerciseSetsRequest es : request.getExerciseSets()) {
-            ExerciseSets exerciseSet = new ExerciseSets();
-
+        for (ExerciseSetsRequest es : request.getExercises()) {
             Exercise exercise = exerciseRepository.findById(es.getExerciseId())
                     .orElseThrow(() -> new Exception("There is no exercise with id " + es.getExerciseId()));
 
-            exerciseSet.setExercise(exercise);
-            exerciseSet.setReps(es.getReps());
-            exerciseSet.setWeight(es.getWeight());
+            for (SetsRequest set : es.getSets()) {
+                ExerciseSets exerciseSet = new ExerciseSets();
 
-            exerciseSets.add(exerciseSet);
+                exerciseSet.setExercise(exercise);
+                exerciseSet.setReps(set.getReps());
+                exerciseSet.setWeight(set.getWeight());
+
+                exerciseSets.add(exerciseSet);
+            }
         }
 
         for (ExerciseSets exerciseSet : exerciseSets) {

@@ -7,6 +7,7 @@ import { BoardUserComponent } from './board-user/board-user.component';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LogComponent } from './log/log.component';
+import { NewWorkoutComponent } from './new-workout/new-workout.component';
 
 export const routes: Routes = [
     {
@@ -40,6 +41,10 @@ export const routes: Routes = [
     {
         path: "log",
         component: LogComponent
+    },
+    {
+        path: "new-workout",
+        component: NewWorkoutComponent
     },
     {
         path: "",

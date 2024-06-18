@@ -1,6 +1,7 @@
 package com.lyfter.backend.controller;
 
 import com.lyfter.backend.payload.request.WorkoutLogRequest;
+import com.lyfter.backend.payload.response.MessageResponse;
 import com.lyfter.backend.service.WorkoutLogCRUDService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class WorkoutLogController {
     public ResponseEntity<?> addWorkoutLog(@Valid @RequestBody WorkoutLogRequest request) {
         try {
             workoutLogCRUDService.saveWorkoutLog(request);
-            return ResponseEntity.ok("Workout log added successfully.");
+            return ResponseEntity.ok(new MessageResponse(("Workout log added successfully.")));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

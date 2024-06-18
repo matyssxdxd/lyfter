@@ -13,6 +13,6 @@ import java.util.List;
 public class WorkoutLogRequest {
     private Integer workoutId;
     private Integer userId;
-    private List<ExerciseSetsRequest> exerciseSets;
+    private List<ExerciseSetsRequest> exercises;
     private LocalTime length;
 }

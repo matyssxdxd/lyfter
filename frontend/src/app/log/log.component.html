@@ -5,6 +5,7 @@
     </ul>
   
     <div *ngIf="isWorkoutSelected">
+      <p>{{ this.convertToHMS(length) }}</p>
       <form [formGroup]="form" (ngSubmit)="logWorkout()">
         <div formArrayName="exercises">
           <div *ngFor="let exercise of exercisesFormArray.controls; let i = index" [formGroupName]="i">

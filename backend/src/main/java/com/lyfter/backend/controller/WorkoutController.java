@@ -1,6 +1,7 @@
 package com.lyfter.backend.controller;
 
 import com.lyfter.backend.payload.request.WorkoutRequest;
+import com.lyfter.backend.payload.response.MessageResponse;
 import com.lyfter.backend.security.service.UserDetailsImpl;
 import com.lyfter.backend.service.WorkoutCRUDService;
 import jakarta.validation.Valid;
@@ -52,7 +53,7 @@ public class WorkoutController {
     public ResponseEntity<?> addWorkout(@Valid @RequestBody WorkoutRequest request) {
         try {
             workoutCRUDService.addWorkout(request);
-            return ResponseEntity.ok("Workout added successfully.");
+            return ResponseEntity.ok(new MessageResponse(("Workout added successfully.")));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -63,7 +64,7 @@ public class WorkoutController {
     public ResponseEntity<?> updateWorkout(@Valid @RequestBody WorkoutRequest request, @RequestParam int id) {
         try {
             workoutCRUDService.updateWorkout(request, id);
-            return ResponseEntity.ok("Workout updated successfully.");
+            return ResponseEntity.ok(new MessageResponse("Workout updated successfully."));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -74,7 +75,7 @@ public class WorkoutController {
     public ResponseEntity<?> deleteWorkout(@RequestParam int id) {
         try {
             workoutCRUDService.deleteWorkout(id);
-            return ResponseEntity.ok("Workout deleted successfully.");
+            return ResponseEntity.ok(new MessageResponse("Workout deleted successfully."));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

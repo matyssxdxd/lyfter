@@ -1,0 +1,14 @@
+<form [formGroup]="form" (ngSubmit)="createWorkout()">
+    <input type="text" formControlName="name" placeholder="Workout name">
+    <textarea formControlName="description" placeholder="Workout description"></textarea>
+    
+    <div *ngFor="let exercise of exercises">
+      <p>{{ exercise.name }}</p>
+      <button type="button" (click)="toggleExercise(exercise.id)">
+        {{ isExerciseInFormArray(exercise.id) ? '-' : '+' }}
+      </button>
+    </div>
+  
+    <button type="submit">Create workout</button>
+  </form>
+  
