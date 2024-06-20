@@ -1,1 +1,10 @@
 <button [routerLink]="['/log']">LOG</button>
+<div class="flex">
+    <button (click)="changeDate('decrease')">LEFT</button>
+    <h1>{{ selectedDate.toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }) }}</h1>
+    <button (click)="changeDate('increase')">RIGHT</button>
+</div>
