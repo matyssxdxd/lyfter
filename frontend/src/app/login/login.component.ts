@@ -3,18 +3,18 @@ import { Component } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { StorageService } from '../_services/storage.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
   form!: FormGroup;
-  isLoggedIn = false;
+  isLoggedIn: boolean = false;
   isLoginFailed = false;
   errorMessage = "";
 
@@ -22,7 +22,13 @@ export class LoginComponent {
     private authService: AuthService,
     private storageService: StorageService,
     private router: Router
-  ) {}
+  ) {
+    this.isLoggedIn = this.storageService.isLoggedIn();
+
+    if (this.isLoggedIn) {
+      this.router.navigate(["/dashboard"]);
+    }
+  }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -31,12 +37,16 @@ export class LoginComponent {
       ]),
       password: new FormControl(null, [
         Validators.required,
-        Validators.minLength(6)
       ])
     })
-    if (this.storageService.isLoggedIn()) {
-      this.isLoggedIn = true;
-    }
+
+    this.form.get('username')!.valueChanges.subscribe(() => {
+      this.isLoginFailed = false;
+    });
+
+    this.form.get('password')!.valueChanges.subscribe(() => {
+      this.isLoginFailed = false;
+    });
   }
 
   get username() {
@@ -60,7 +70,7 @@ export class LoginComponent {
           this.router.navigate(['/dashboard']);
         },
         error: err => {
-          this.errorMessage = err.error.errorMessage;
+          this.errorMessage = "Incorrect username or password";
           this.isLoginFailed = true;
         }
       });

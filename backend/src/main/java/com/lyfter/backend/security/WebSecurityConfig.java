@@ -64,6 +64,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/test/**").permitAll()
                                 .requestMatchers("/api/workout/**").permitAll()
                                 .requestMatchers("/api/exercise/**").permitAll()
+                                .requestMatchers("/error").permitAll()
                                 .anyRequest().authenticated()
                 );
 

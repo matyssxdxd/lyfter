@@ -5,6 +5,7 @@ import { WorkoutService } from '../_services/workout.service';
 import { Exercise } from '../_interfaces/exercise';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { StorageService } from '../_services/storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-workout',
@@ -14,11 +15,18 @@ import { StorageService } from '../_services/storage.service';
   styleUrls: ['./new-workout.component.css']
 })
 export class NewWorkoutComponent {
+  isLoggedIn = false;
   form: FormGroup;
   exercises: Exercise[] = [];
   errorMessage = "";
 
-  constructor(private exerciseService: ExerciseService, private workoutService: WorkoutService, private storageService: StorageService, private fb: FormBuilder) {
+  constructor(private exerciseService: ExerciseService, private workoutService: WorkoutService, private storageService: StorageService, private router: Router, private fb: FormBuilder) {
+    this.isLoggedIn = this.storageService.isLoggedIn();
+
+    if (!this.isLoggedIn) {
+      this.router.navigate(["/login"]);
+    }
+
     this.form = this.fb.group({
       userId: this.fb.control(this.storageService.getUser().id),
       name: this.fb.control("", Validators.required),
@@ -28,6 +36,7 @@ export class NewWorkoutComponent {
   }
 
   ngOnInit(): void {
+
     this.exerciseService.getAllExercises().subscribe({
       next: data => {
         this.exercises = data;

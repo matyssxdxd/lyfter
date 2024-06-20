@@ -33,6 +33,12 @@ export class LogComponent implements OnDestroy {
     private workoutLogService: WorkoutLogService,
     private fb: FormBuilder
   ) {
+    this.isLoggedIn = this.storageService.isLoggedIn();
+
+    if (!this.isLoggedIn) {
+      this.router.navigate(["/login"]);
+    }
+    
     this.form = this.fb.group({
       workoutId: this.fb.control(null),
       userId: this.storageService.getUser().id,
@@ -42,12 +48,6 @@ export class LogComponent implements OnDestroy {
   }
 
   ngOnInit(): void {
-    this.isLoggedIn = this.storageService.isLoggedIn();
-
-    if (!this.isLoggedIn) {
-      this.router.navigate(["/login"]);
-    }
-    
     const userId = this.storageService.getUser().id;
 
     this.workoutService.getUserWorkouts(userId).subscribe({

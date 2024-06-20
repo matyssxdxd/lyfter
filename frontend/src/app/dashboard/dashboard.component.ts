@@ -13,13 +13,15 @@ import { CommonModule } from '@angular/common';
 export class DashboardComponent {
   isLoggedIn: boolean = false;
 
-  constructor(private router: Router, private storageService: StorageService) {}
-
-  ngOnInit(): void {
+  constructor(private router: Router, private storageService: StorageService) {
     this.isLoggedIn = this.storageService.isLoggedIn();
 
     if (!this.isLoggedIn) {
       this.router.navigate(["/login"]);
     }
+  }
+
+  ngOnInit(): void {
+
   }
 }

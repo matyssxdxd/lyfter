@@ -1,75 +1,111 @@
-<div class="h-full bg-gray-300">
+<div class="h-full bg-slate-950">
   <form
     class="flex flex-col h-full justify-center items-center"
     [formGroup]="form"
     (ngSubmit)="onSubmit()"
   >
-    <div class="flex flex-col items-center justify-center h-1/2">
-      <h1 class="text-slate-950 text-4xl font-semibold">Lyfter</h1>
-      <h2 class="text-slate-950 text-sm">A gym addict's dream</h2>
+    <div class="flex flex-col items-center justify-center h-1/2 md:mb-8 md:h-max">
+      <h1 class="text-white text-4xl font-semibold">Lyfter</h1>
+      <h2 class="text-white text-sm">A gym addict's dream</h2>
     </div>
-    <div class="flex flex-col mt-auto mb-8 w-full">
-      <div>
+    <div class="flex flex-col gap-2 mt-auto mb-8 w-full px-5 md:items-center md:w-96 md:mt-0">
+      <div class="flex flex-col w-full items-center">
         <input
+          class="w-full p-4 rounded-lg focus:outline-none border border-purple-600"
           type="text"
           name="username"
           formControlName="username"
           placeholder="Username"
         />
-        <div *ngIf="username?.invalid">
-          <div *ngIf="username?.hasError('required')">Username is required</div>
-          <div
-            *ngIf="
-              username?.hasError('minlength') || username?.hasError('maxlength')
-            "
-          >
-            Username must be between 3 and 20 characters
-          </div>
+        <div
+          class="flex items-center justify-start w-full"
+          *ngIf="
+            username?.hasError('required') ||
+            username?.hasError('minlength') ||
+            username?.hasError('maxlength')
+          "
+        >
+          <mat-icon class="text-red-600 scale-75" fontIcon="close"></mat-icon>
+          <p class="text-white text-xs font-semibold">
+            username must be between 3 and 20 characters
+          </p>
+        </div>
+        <div
+          class="flex items-center justify-start w-full"
+          *ngIf="
+            !username?.hasError('required') &&
+            !username?.hasError('minlength') &&
+            !username?.hasError('maxlength')
+          "
+        >
+          <mat-icon class="text-green-600 scale-75" fontIcon="check"></mat-icon>
+          <p class="text-white text-xs font-semibold">valid username</p>
         </div>
       </div>
-      <div>
+      <div class="flex flex-col w-full items-center">
         <input
+          class="w-full p-4 rounded-lg focus:outline-none border border-purple-600"
           type="email"
           name="email"
           formControlName="email"
           placeholder="E-mail"
         />
         <div
-          class="flex items-center"
+          class="flex items-center justify-start w-full"
           *ngIf="email?.hasError('required') || email?.hasError('email')"
         >
-          <mat-icon class=" text-red-600 scale-75" fontIcon="close"></mat-icon>
-          <p class="text-xs font-semibold">invalid email</p>
+          <mat-icon class="text-red-600 scale-75" fontIcon="close"></mat-icon>
+          <p class="text-white text-xs font-semibold">invalid email</p>
         </div>
-        <div 
-            class="flex items-center"
-            *ngIf="!email?.hasError('required') && !email?.hasError('email')">
-            <mat-icon class=" text-green-600 scale-75" fontIcon="check"></mat-icon>
-            <p class="text-xs font-semibold">valid email</p>
+        <div
+          class="flex items-center justify-start w-full"
+          *ngIf="!email?.hasError('required') && !email?.hasError('email')"
+        >
+          <mat-icon class="text-green-600 scale-75" fontIcon="check"></mat-icon>
+          <p class="text-white text-xs font-semibold">valid email</p>
         </div>
       </div>
-      <div>
+      <div class="flex flex-col w-full items-center">
         <input
+          class="w-full p-4 rounded-lg focus:outline-none border border-purple-600"
           type="password"
           name="password"
           formControlName="password"
           placeholder="Password"
         />
-        <div *ngIf="password?.invalid">
-          <div *ngIf="password?.hasError('required')">Password is required</div>
-          <div *ngIf="password?.hasError('minlength')">
-            Password must be at least 6 characters
-          </div>
+        <div
+          class="flex items-center justify-start w-full"
+          *ngIf="
+            password?.hasError('required') || password?.hasError('minlength')
+          "
+        >
+          <mat-icon class="text-red-600 scale-75" fontIcon="close"></mat-icon>
+          <p class="text-white text-xs font-semibold">
+            password must be at least 6 characters
+          </p>
+        </div>
+        <div
+          class="flex items-center justify-start w-full"
+          *ngIf="
+            !password?.hasError('required') && !password?.hasError('minlength')
+          "
+        >
+          <mat-icon class="text-green-600 scale-75" fontIcon="check"></mat-icon>
+          <p class="text-white text-xs font-semibold">valid password</p>
         </div>
       </div>
-      <div>
-        <button type="submit">Sign up</button>
-      </div>
-      <div>
-        <p>Already have an account? <span>Sign In</span></p>
-      </div>
-      <div *ngIf="isSignupFailed">
-        <div>
+      <div class="flex flex-col w-full items-center gap-2">
+        <button
+          class="bg-purple-900 text-white py-4 rounded-lg font-semibold hover:bg-purple-600 transition-colors w-full"
+          type="submit"
+        >
+          Sign up
+        </button>
+        <p class="text-white font-normal">
+          Already have an account?
+          <span class="text-purple-900 hover:text-purple-600 font-semibold cursor-pointer transition-colors" [routerLink]="['/login']">Sign In</span>
+        </p>
+        <div *ngIf="isSignupFailed">
           {{ errorMessage }}
         </div>
       </div>
