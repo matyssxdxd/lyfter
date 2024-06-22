@@ -1,14 +1,19 @@
-<form [formGroup]="form" (ngSubmit)="createWorkout()">
-    <input type="text" formControlName="name" placeholder="Workout name">
-    <textarea formControlName="description" placeholder="Workout description"></textarea>
-    
-    <div *ngFor="let exercise of exercises">
-      <p>{{ exercise.name }}</p>
-      <button type="button" (click)="toggleExercise(exercise.id)">
-        {{ isExerciseInFormArray(exercise.id) ? '-' : '+' }}
-      </button>
-    </div>
-  
-    <button type="submit">Create workout</button>
-  </form>
-  
+<div class="bg-slate-950 h-full text-white overflow-scroll">
+  <div class="container mx-auto px-4 py-20 md:py-0">
+    <form class="flex flex-col items-center" [formGroup]="form" (ngSubmit)="createWorkout()">
+      <p class="text-lg font-bold mb-4">Create a new workout</p>
+      <input class="bg-slate-900 w-full placeholder:text-center p-2 rounded-md mb-4" type="text" formControlName="name" placeholder="Workout name">
+      <textarea class="bg-slate-900 resize-none w-full placeholder:text-center p-2 rounded-md mb-4" formControlName="description" placeholder="Workout description"></textarea>
+      <p class="text-lg font-bold mb-4">Choose exercises</p>
+      <div class="flex justify-between bg-slate-900 p-4 rounded-md mb-4 w-full" *ngFor="let exercise of exercises">
+        <p class="font-semibold">{{ exercise.name }}</p>
+        <button type="button" (click)="toggleExercise(exercise.id)">
+          <mat-icon class="bg-purple-600 rounded-md" fontIcon="add" *ngIf="!isExerciseInFormArray(exercise.id)" />
+          <mat-icon class="bg-red-600 rounded-md" fontIcon="remove" *ngIf="isExerciseInFormArray(exercise.id)" />
+        </button>
+      </div>
+      <button class="bg-purple-600 px-2 py-4 w-full rounded-md font-bold text-lg" type="submit">Create workout</button>
+    </form>
+  </div>
+</div>
+<app-mobile-navigation class="md:hidden" />

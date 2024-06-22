@@ -30,4 +30,8 @@ export class WorkoutLogService {
       httpOptions
     );
   }
+
+  getUserWorkoutLogByUserIdAndDate(userId: number, date: Date): Observable<any> {
+    return this.http.get(API_URL + "find?userId=" + userId + "&date=" + date.toISOString().split('T')[0], httpOptions);
+  }
 }

@@ -6,11 +6,13 @@ import { Exercise } from '../_interfaces/exercise';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { StorageService } from '../_services/storage.service';
 import { Router } from '@angular/router';
+import { MobileNavigationComponent } from '../mobile-navigation/mobile-navigation.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-new-workout',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MobileNavigationComponent, MatIconModule],
   templateUrl: './new-workout.component.html',
   styleUrls: ['./new-workout.component.css']
 })

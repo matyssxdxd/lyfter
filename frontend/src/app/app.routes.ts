@@ -3,8 +3,6 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
-import { BoardUserComponent } from './board-user/board-user.component';
-import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LogComponent } from './log/log.component';
 import { NewWorkoutComponent } from './new-workout/new-workout.component';
@@ -25,14 +23,6 @@ export const routes: Routes = [
     {
         path: "profile",
         component: ProfileComponent
-    },
-    {
-        path: "user",
-        component: BoardUserComponent
-    },
-    {
-        path: "admin",
-        component: BoardAdminComponent
     },
     {
         path: "dashboard",

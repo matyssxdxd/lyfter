@@ -1,28 +1,34 @@
-    <ul *ngIf="!isWorkoutSelected">
-      <li *ngFor="let workout of workouts" (click)="selectWorkout(workout.id)">
-        {{ workout.name }}
-      </li>
-    </ul>
-  
-    <div *ngIf="isWorkoutSelected">
-      <p>{{ this.convertToHMS(length) }}</p>
+<div class="bg-slate-950 h-full text-white overflow-scroll">
+  <div class="container mx-auto px-4 py-20 md:py-0">
+    <div class="flex flex-col items-center" *ngIf="!isWorkoutSelected">
+      <p class="font-bold text-lg mb-4">Your workouts</p>
+      <div class="bg-slate-900 border border-purple-600 w-full p-2 rounded-md cursor-default hover:bg-slate-800 transition-colors mb-4" *ngFor="let workout of workouts" (click)="selectWorkout(workout.id)">
+        <p class="font-semibold">{{ workout.name }}</p>
+        <p class="font-thin">{{ workout.description }}</p>
+      </div>
+    </div>
+
+    <div class="flex flex-col" *ngIf="isWorkoutSelected">
+      <p class="font-bold text-sm mb-4">Time: {{ this.convertToHMS(length) }}</p>
       <form [formGroup]="form" (ngSubmit)="logWorkout()">
         <div formArrayName="exercises">
-          <div *ngFor="let exercise of exercisesFormArray.controls; let i = index" [formGroupName]="i">
-            <h3>{{ exercises[i].name }}</h3>
-            <div formArrayName="sets">
-              <div *ngFor="let set of setsFormArray(i).controls; let j = index" [formGroupName]="j">
-                <label for="weight">Weight</label>
-                <input type="number" formControlName="weight">
-                <label for="reps">Reps</label>
-                <input type="number" formControlName="reps">
-                <button type="button" (click)="removeSet(i, j)">Remove Set</button>
+          <div class="bg-slate-900 flex flex-col items-center p-2 rounded-md gap-4 mb-4" *ngFor="let exercise of exercisesFormArray.controls; let i = index" [formGroupName]="i">
+            <p class="text-lg">{{ exercises[i].name }}</p>
+            <div class="flex flex-col items-center w-full gap-2" formArrayName="sets">
+              <div class="flex flex-col items-center w-full gap-2" *ngFor="let set of setsFormArray(i).controls; let j = index" [formGroupName]="j">
+                <div class="flex gap-4">
+                  <input class="bg-slate-700 rounded-md w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none py-2 px-1" type="number" formControlName="weight" placeholder="weight">
+                  <input class="bg-slate-700 rounded-md w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none py-2 px-1" type="number" formControlName="reps" placeholder="reps">
+                </div>
+                <button class="bg-red-600 text-sm px-2 py-1 rounded-md" type="button" (click)="removeSet(i, j)">Remove Set</button>
               </div>
-              <button type="button" (click)="addSet(i)">Add Set</button>
+              <button class="bg-purple-600 text-sm px-2 py-1 rounded-md" type="button" (click)="addSet(i)">Add Set</button>
             </div>
           </div>
         </div>
-        <button type="submit">Log Workout</button>
+        <button class="bg-purple-600 px-2 py-4 w-full rounded-md" type="submit">Log Workout</button>
       </form>
     </div>
-  
+  </div>
+</div>
+<app-mobile-navigation class="md:hidden" />
