@@ -17,14 +17,16 @@ import java.util.List;
 @Service
 public class WorkoutCRUDServiceImpl implements WorkoutCRUDService {
 
-    @Autowired
-    WorkoutRepository workoutRepository;
+    private final WorkoutRepository workoutRepository;
+    private final UserRepository userRepository;
+    private final ExerciseRepository exerciseRepository;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    ExerciseRepository exerciseRepository;
+    public WorkoutCRUDServiceImpl(WorkoutRepository workoutRepository, UserRepository userRepository, ExerciseRepository exerciseRepository) {
+        this.workoutRepository = workoutRepository;
+        this.userRepository = userRepository;
+        this.exerciseRepository = exerciseRepository;
+    }
 
     @Override
     public List<Workout> getAllWorkouts() throws Exception {

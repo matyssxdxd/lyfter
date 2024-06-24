@@ -44,7 +44,7 @@ export const routes: Routes = [
         component: PostsComponent
     },
     {
-        path: "post",
+        path: "posts/:id",
         component: PostComponent
     },
     {

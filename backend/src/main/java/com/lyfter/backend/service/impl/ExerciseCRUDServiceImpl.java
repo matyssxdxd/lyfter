@@ -17,13 +17,17 @@ import java.util.Set;
 @Service
 public class ExerciseCRUDServiceImpl implements ExerciseCRUDService {
 
-    @Autowired
-    ExerciseRepository exerciseRepo;
+    private static final String EXERCISE_ID_ERROR = "Exercise id must be greater than 0.";
+    private static final String NOT_FOUND_ERROR = "not found";
+
+    private final ExerciseRepository exerciseRepo;
+    private final MuscleGroupRepository muscleGroupRepository;
 
     @Autowired
-    MuscleGroupRepository muscleGroupRepo;
-    @Autowired
-    private MuscleGroupRepository muscleGroupRepository;
+    ExerciseCRUDServiceImpl(ExerciseRepository exerciseRepository, MuscleGroupRepository musclegroupRepository) {
+        this.exerciseRepo = exerciseRepository;
+        this.muscleGroupRepository = musclegroupRepository;
+    }
 
     @Override
     public List<Exercise> getAllExercises() throws Exception {
@@ -34,10 +38,10 @@ public class ExerciseCRUDServiceImpl implements ExerciseCRUDService {
 
     @Override
     public Exercise getExerciseById(int id) throws Exception {
-        if (id < 0) throw new Exception("Exercise id must be greater than 0.");
+        if (id < 0) throw new Exception(EXERCISE_ID_ERROR);
 
         return exerciseRepo.findById(id)
-                .orElseThrow(() -> new Exception("Exercise id " + id + " not found."));
+                .orElseThrow(() -> new Exception("Exercise id " + id + NOT_FOUND_ERROR));
     }
 
     @Override
@@ -46,7 +50,7 @@ public class ExerciseCRUDServiceImpl implements ExerciseCRUDService {
 
         List<Exercise> ex = exerciseRepo.findByMuscleGroupsName(muscleGroup);
 
-        if (ex.isEmpty()) throw new Exception("Exercises with muscle group " + muscleGroup + " not found.");
+        if (ex.isEmpty()) throw new Exception("Exercises with muscle group " + muscleGroup + NOT_FOUND_ERROR);
 
         return ex;
     }
@@ -60,7 +64,7 @@ public class ExerciseCRUDServiceImpl implements ExerciseCRUDService {
 
         for (MuscleGroupEnum muscleGroup : request.getMuscleGroups()) {
             MuscleGroup mg = muscleGroupRepository.findByName(muscleGroup)
-                    .orElseThrow(() -> new Exception("Muscle group " + muscleGroup + " not found."));
+                    .orElseThrow(() -> new Exception("Muscle group " + muscleGroup + NOT_FOUND_ERROR));
             muscleGroups.add(mg);
         }
 
@@ -76,7 +80,7 @@ public class ExerciseCRUDServiceImpl implements ExerciseCRUDService {
     @Override
     public void updateExerciseById(ExerciseRequest request, Integer id) throws Exception {
         if (request == null) throw new Exception("Exercise must be provided.");
-        if (id < 0) throw new Exception("Exercise id must be greater than 0.");
+        if (id < 0) throw new Exception(EXERCISE_ID_ERROR);
 
         Exercise ex = exerciseRepo.findById(id)
                 .orElseThrow(() -> new Exception("Exercise with id " + id + " was not found."));
@@ -85,7 +89,7 @@ public class ExerciseCRUDServiceImpl implements ExerciseCRUDService {
 
         for (MuscleGroupEnum muscleGroup : request.getMuscleGroups()) {
             MuscleGroup mg = muscleGroupRepository.findByName(muscleGroup)
-                    .orElseThrow(() -> new Exception("Muscle group " + muscleGroup + " not found."));
+                    .orElseThrow(() -> new Exception("Muscle group " + muscleGroup + NOT_FOUND_ERROR));
             muscleGroups.add(mg);
         }
 
@@ -98,7 +102,7 @@ public class ExerciseCRUDServiceImpl implements ExerciseCRUDService {
 
     @Override
     public void deleteExerciseById(Integer id) throws Exception {
-        if (id < 0) throw new Exception("Exercise id must be greater than 0.");
+        if (id < 0) throw new Exception(EXERCISE_ID_ERROR);
         if (!exerciseRepo.existsById(id)) throw new Exception("Exercise with id " + id + " was not found.");
 
         exerciseRepo.deleteById(id);

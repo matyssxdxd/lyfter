@@ -74,7 +74,7 @@ export class NewWorkoutComponent {
       this.workoutService.createWorkout(this.form.value).subscribe({
         next: data => {
           console.log(data);
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/log']);
         },
         error: err => {
           this.errorMessage = err.error.errorMessage;

@@ -16,8 +16,12 @@ import java.time.LocalDate;
 @RequestMapping("/api/workout-log")
 public class WorkoutLogController {
 
+    private final WorkoutLogCRUDService workoutLogCRUDService;
+
     @Autowired
-    WorkoutLogCRUDService workoutLogCRUDService;
+    public WorkoutLogController(WorkoutLogCRUDService workoutLogCRUDService) {
+        this.workoutLogCRUDService = workoutLogCRUDService;
+    }
 
     @PostMapping("/add")
     public ResponseEntity<?> addWorkoutLog(@Valid @RequestBody WorkoutLogRequest request) {

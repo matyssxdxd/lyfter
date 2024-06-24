@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/post-comment")
 public class PostCommentController {
 
+    private final PostCommentCRUDService postCommentCRUDService;
+
     @Autowired
-    PostCommentCRUDService postCommentCRUDService;
+    public PostCommentController(PostCommentCRUDService postCommentCRUDService) {
+        this.postCommentCRUDService = postCommentCRUDService;
+    }
 
     @GetMapping("/find")
     public ResponseEntity<?> getCommentsByPostId(@RequestParam int postId) {

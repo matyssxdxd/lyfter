@@ -5,7 +5,6 @@ import com.lyfter.backend.model.RoleEnum;
 import com.lyfter.backend.model.User;
 import com.lyfter.backend.payload.request.LoginRequest;
 import com.lyfter.backend.payload.request.SignupRequest;
-import com.lyfter.backend.payload.response.MessageResponse;
 import com.lyfter.backend.payload.response.UserInfoResponse;
 import com.lyfter.backend.repo.RoleRepository;
 import com.lyfter.backend.repo.UserRepository;
@@ -13,9 +12,7 @@ import com.lyfter.backend.security.jwt.JwtUtils;
 import com.lyfter.backend.security.service.UserDetailsImpl;
 import com.lyfter.backend.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,20 +28,22 @@ import java.util.stream.Collectors;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private static final String ROLE_NOT_FOUND = "Error: Role is not found.";
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    JwtUtils jwtUtils;
+    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository,
+                           RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
+        this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtils = jwtUtils;
+    }
 
     @Override
     public UserInfoResponse authenticateUser(LoginRequest loginRequest) {
@@ -78,9 +77,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void registerUser(SignupRequest signupRequest) throws Exception {
-        if (userRepository.existsByUsername(signupRequest.getUsername())) throw new Exception("Error: Username is already taken");
+        if (Boolean.TRUE.equals(userRepository.existsByUsername(signupRequest.getUsername()))) throw new Exception("Error: Username is already taken");
 
-        if (userRepository.existsByEmail(signupRequest.getEmail())) throw new Exception("Error: Email is already in use");
+        if (Boolean.TRUE.equals(userRepository.existsByEmail(signupRequest.getEmail()))) throw new Exception("Error: Email is already in use");
 
         User user = new User(signupRequest.getUsername(),
                 signupRequest.getEmail(),
@@ -91,21 +90,18 @@ public class AuthServiceImpl implements AuthService {
 
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(RoleEnum.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(RoleEnum.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(RoleEnum.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
+                if (role.equals("admin")) {
+                    Role adminRole = roleRepository.findByName(RoleEnum.ROLE_ADMIN)
+                            .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
+                    roles.add(adminRole);
+                } else {
+                    Role userRole = roleRepository.findByName(RoleEnum.ROLE_USER)
+                            .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
+                    roles.add(userRole);
                 }
             });
         }

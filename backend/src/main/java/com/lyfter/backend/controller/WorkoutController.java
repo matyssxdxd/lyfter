@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/workout")
 public class WorkoutController {
 
+    private final WorkoutCRUDService workoutCRUDService;
+
     @Autowired
-    WorkoutCRUDService workoutCRUDService;
+    public WorkoutController(WorkoutCRUDService workoutCRUDService) {
+        this.workoutCRUDService = workoutCRUDService;
+    }
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -77,11 +81,4 @@ public class WorkoutController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-//    @GetMapping("/test")
-//    public ResponseEntity<?> test() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-//        return ResponseEntity.ok(userDetails);
-//    }
 }

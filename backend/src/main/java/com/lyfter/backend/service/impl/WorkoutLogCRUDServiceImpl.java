@@ -16,20 +16,20 @@ import java.util.List;
 @Service
 public class WorkoutLogCRUDServiceImpl implements WorkoutLogCRUDService {
 
-    @Autowired
-    private WorkoutLogRepository workoutLogRepository;
+    private final WorkoutLogRepository workoutLogRepository;
+    private final WorkoutRepository workoutRepository;
+    private final UserRepository userRepository;
+    private final ExerciseRepository exerciseRepository;
+    private final ExerciseSetsRepository exerciseSetsRepository;
 
     @Autowired
-    private WorkoutRepository workoutRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ExerciseRepository exerciseRepository;
-
-    @Autowired
-    private ExerciseSetsRepository exerciseSetsRepository;
+    public WorkoutLogCRUDServiceImpl(WorkoutLogRepository workoutLogRepository, WorkoutRepository workoutRepository, UserRepository userRepository, ExerciseRepository exerciseRepository, ExerciseSetsRepository exerciseSetsRepository) {
+        this.workoutLogRepository = workoutLogRepository;
+        this.workoutRepository = workoutRepository;
+        this.userRepository = userRepository;
+        this.exerciseRepository = exerciseRepository;
+        this.exerciseSetsRepository = exerciseSetsRepository;
+    }
 
     @Override
     public List<WorkoutLog> getAllWorkoutLogs() throws Exception {
@@ -106,6 +106,12 @@ public class WorkoutLogCRUDServiceImpl implements WorkoutLogCRUDService {
 
     @Override
     public void deleteWorkoutLog(int id) throws Exception {
+        if (id < 0) throw new Exception("Workout log id must be greater than 0.");
 
+        WorkoutLog log = workoutLogRepository.findById(id)
+                .orElseThrow(() -> new Exception("There is no workout log with id " + id));
+
+        exerciseSetsRepository.deleteAll(log.getExerciseSets());
+        workoutLogRepository.delete(log);
     }
 }

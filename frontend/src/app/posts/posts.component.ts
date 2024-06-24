@@ -39,7 +39,7 @@ export class PostsComponent {
     
   }
 
-  converDate(date: string) {
+  convertDate(date: string) {
     return (new Date(date)).toLocaleDateString();
   }
 }

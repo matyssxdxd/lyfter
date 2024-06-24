@@ -1,7 +1,6 @@
 package com.lyfter.backend.service;
 
 import com.lyfter.backend.model.Exercise;
-import com.lyfter.backend.model.MuscleGroup;
 import com.lyfter.backend.model.MuscleGroupEnum;
 import com.lyfter.backend.payload.request.ExerciseRequest;
 

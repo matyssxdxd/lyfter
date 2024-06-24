@@ -11,20 +11,21 @@ import com.lyfter.backend.service.PostCRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class PostCRUDServiceImpl implements PostCRUDService {
 
-    @Autowired
-    PostRepository postRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
+    private final PostCommentRepository postCommentRepository;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    PostCommentRepository postCommentRepository;
+    public PostCRUDServiceImpl(PostRepository postRepository, UserRepository userRepository, PostCommentRepository postCommentRepository) {
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+        this.postCommentRepository = postCommentRepository;
+    }
 
     @Override
     public List<Post> getAllPosts() throws Exception {

@@ -1,6 +1,5 @@
 package com.lyfter.backend.controller;
 
-import com.lyfter.backend.model.Post;
 import com.lyfter.backend.payload.request.PostRequest;
 import com.lyfter.backend.payload.response.MessageResponse;
 import com.lyfter.backend.service.PostCRUDService;
@@ -13,8 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/post")
 public class PostController {
 
+    private final PostCRUDService postCRUDService;
+
     @Autowired
-    PostCRUDService postCRUDService;
+    public PostController(PostCRUDService postCRUDService) {
+        this.postCRUDService = postCRUDService;
+    }
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllPosts() {

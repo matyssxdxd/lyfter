@@ -16,14 +16,16 @@ import java.util.List;
 @Service
 public class PostCommentCRUDServiceImpl implements PostCommentCRUDService {
 
-    @Autowired
-    PostCommentRepository postCommentRepository;
+    private final PostCommentRepository postCommentRepository;
+    private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    PostRepository postRepository;
+    public PostCommentCRUDServiceImpl(PostCommentRepository postCommentRepository, UserRepository userRepository, PostRepository postRepository) {
+        this.postCommentRepository = postCommentRepository;
+        this.userRepository = userRepository;
+        this.postRepository = postRepository;
+    }
 
     @Override
     public List<PostComment> getByPostId(int postId) throws Exception {

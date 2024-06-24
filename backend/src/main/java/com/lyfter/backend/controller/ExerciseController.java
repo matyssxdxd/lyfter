@@ -2,6 +2,7 @@ package com.lyfter.backend.controller;
 
 import com.lyfter.backend.model.MuscleGroupEnum;
 import com.lyfter.backend.payload.request.ExerciseRequest;
+import com.lyfter.backend.payload.response.MessageResponse;
 import com.lyfter.backend.service.ExerciseCRUDService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/exercise")
 public class ExerciseController {
 
+    private final ExerciseCRUDService exerciseCRUDService;
+
     @Autowired
-    ExerciseCRUDService exerciseCRUDService;
+    public ExerciseController(ExerciseCRUDService exerciseCRUDService) {
+        this.exerciseCRUDService = exerciseCRUDService;
+    }
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -23,7 +28,7 @@ public class ExerciseController {
         try {
             return ResponseEntity.ok(exerciseCRUDService.getAllExercises());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 
@@ -38,10 +43,10 @@ public class ExerciseController {
             } else if (muscleGroup != null) {
                 return ResponseEntity.ok(exerciseCRUDService.getExercisesByMuscleGroup(MuscleGroupEnum.valueOf(muscleGroup)));
             } else {
-                return ResponseEntity.badRequest().body("Either 'id' or 'muscleGroup' parameter must be provided.");
+                return ResponseEntity.badRequest().body(new MessageResponse("Either 'id' or 'muscleGroup' parameter must be provided."));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 
@@ -50,9 +55,9 @@ public class ExerciseController {
     public ResponseEntity<?> addExercise(@Valid @RequestBody ExerciseRequest request) {
         try {
             exerciseCRUDService.addExercise(request);
-            return ResponseEntity.ok("Exercise added successfully.");
+            return ResponseEntity.ok(new MessageResponse("Exercise added successfully."));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 
@@ -61,9 +66,9 @@ public class ExerciseController {
     public ResponseEntity<?> updateExercise(@Valid @RequestBody ExerciseRequest request, @RequestParam int id) {
         try {
             exerciseCRUDService.updateExerciseById(request, id);
-            return ResponseEntity.ok("Exercise updated successfully.");
+            return ResponseEntity.ok(new MessageResponse("Exercise updated successfully."));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 
@@ -72,9 +77,9 @@ public class ExerciseController {
     public ResponseEntity<?> deleteExercise(@RequestParam int id) {
         try {
             exerciseCRUDService.deleteExerciseById(id);
-            return ResponseEntity.ok("Exercise deleted successfully.");
+            return ResponseEntity.ok(new MessageResponse("Exercise deleted successfully."));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 
