@@ -1,0 +1,11 @@
+<app-desktop-navigation class="hidden md:block" />
+<div class="bg-slate-950 h-full text-white overflow-scroll">
+  <div class="container mx-auto px-4 py-20 md:py-10 h-full">
+    <form class="flex flex-col items-center justify-center h-full" [formGroup]="form" (ngSubmit)="savePost()">
+        <h1 class="text-lg font-bold mb-4">Create a new post</h1>
+        <textarea class="bg-slate-900 resize-none w-full p-2 h-1/2 rounded-md mb-4 outline-none" formControlName="body" placeholder="What's on your mind?"></textarea>
+        <button type="submit" class="bg-purple-600 px-2 py-4 w-full rounded-md font-bold text-lg">Save</button>
+    </form>
+  </div>
+</div>
+<app-mobile-navigation class="md:hidden" />

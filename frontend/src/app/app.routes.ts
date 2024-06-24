@@ -6,6 +6,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LogComponent } from './log/log.component';
 import { NewWorkoutComponent } from './new-workout/new-workout.component';
+import { PostsComponent } from './posts/posts.component';
+import { PostComponent } from './post/post.component';
+import { NewPostComponent } from './new-post/new-post.component';
 
 export const routes: Routes = [
     {
@@ -35,6 +38,18 @@ export const routes: Routes = [
     {
         path: "new-workout",
         component: NewWorkoutComponent
+    },
+    {
+        path: "posts",
+        component: PostsComponent
+    },
+    {
+        path: "post",
+        component: PostComponent
+    },
+    {
+        path: "new-post",
+        component: NewPostComponent
     },
     {
         path: "",

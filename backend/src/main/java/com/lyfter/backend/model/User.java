@@ -26,6 +26,7 @@ public class User {
 
     @NotNull
     @Size(max = 50)
+    @JsonIgnore
     private String email;
 
     @NotNull
@@ -33,6 +34,7 @@ public class User {
     private String username;
 
     @NotNull
+    @JsonIgnore
     private String password;
 
     @ManyToMany
