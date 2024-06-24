@@ -118,7 +118,7 @@ export class LogComponent implements OnDestroy {
           this.router.navigate(["/dashboard"]);
         },
         error: err => {
-          this.errorMessage = err.error.errorMessage;
+          this.errorMessage = err.error.message;
         }
       })
     }

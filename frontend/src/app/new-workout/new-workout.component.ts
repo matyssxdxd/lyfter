@@ -77,7 +77,7 @@ export class NewWorkoutComponent {
           this.router.navigate(['/log']);
         },
         error: err => {
-          this.errorMessage = err.error.errorMessage;
+          this.errorMessage = err.error.message;
         }
       })
     }

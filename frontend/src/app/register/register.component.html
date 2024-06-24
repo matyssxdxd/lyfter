@@ -9,6 +9,9 @@
       <h2 class="text-white text-sm">A gym addict's dream</h2>
     </div>
     <div class="flex flex-col gap-2 mt-auto mb-8 w-full px-5 md:items-center md:w-96 md:mt-0">
+      <div *ngIf="isSignupFailed" class="flex w-full items-center justify-center border-1 border-red-700 bg-red-300 text-red-700 px-2 py-4 rounded-lg">
+        {{ errorMessage }}
+      </div>
       <div class="flex flex-col w-full items-center">
         <input
           class="w-full p-4 rounded-lg focus:outline-none border border-purple-600"
@@ -105,9 +108,6 @@
           Already have an account?
           <span class="text-purple-900 hover:text-purple-600 font-semibold cursor-pointer transition-colors" [routerLink]="['/login']">Sign In</span>
         </p>
-        <div *ngIf="isSignupFailed">
-          {{ errorMessage }}
-        </div>
       </div>
     </div>
   </form>

@@ -41,7 +41,7 @@ export class NewPostComponent {
           this.router.navigate(['/posts']);
         },
         error: err => {
-          this.errorMessage = err.error.errorMessage;
+          this.errorMessage = err.error.message;
           console.log(this.errorMessage);
         }
       })

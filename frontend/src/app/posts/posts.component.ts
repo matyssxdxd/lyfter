@@ -33,7 +33,7 @@ export class PostsComponent {
         console.log(data);
       },
       error: err => {
-        this.errorMessage = err.error.errorMessage;
+        this.errorMessage = err.error.message;
       }
     })
     

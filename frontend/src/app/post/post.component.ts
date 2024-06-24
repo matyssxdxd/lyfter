@@ -56,7 +56,7 @@ export class PostComponent {
           window.location.reload();
         },
         error: err => {
-          this.errorMessage = err.error.errorMessage;
+          this.errorMessage = err.error.message;
           console.log(this.errorMessage);
         }
       })

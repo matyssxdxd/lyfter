@@ -5,6 +5,7 @@ import com.lyfter.backend.payload.response.MessageResponse;
 import com.lyfter.backend.service.PostCommentCRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
@@ -20,6 +21,7 @@ public class PostCommentController {
     }
 
     @GetMapping("/find")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getCommentsByPostId(@RequestParam int postId) {
         try {
             return ResponseEntity.ok(postCommentCRUDService.getByPostId(postId));
@@ -29,6 +31,7 @@ public class PostCommentController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> addComment(@RequestBody PostCommentRequest postCommentRequest) {
         try {
             postCommentCRUDService.createPostComment(postCommentRequest);
@@ -39,6 +42,7 @@ public class PostCommentController {
     }
 
     @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteComment(@RequestParam int commentId) {
         try {
             postCommentCRUDService.deletePostComment(commentId);

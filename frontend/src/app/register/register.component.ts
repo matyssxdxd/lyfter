@@ -60,10 +60,10 @@ export class RegisterComponent {
           console.log(data);
           this.isSuccessful = true;
           this.isSignupFailed = false;
-          this.router.navigate(['/home']);
+          this.router.navigate(['/login']);
         },
         error: err => {
-          this.errorMessage = err.error.errorMessage;
+          this.errorMessage = err.error.message;
           this.isSignupFailed = true;
         }
       });

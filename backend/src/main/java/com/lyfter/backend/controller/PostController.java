@@ -5,6 +5,7 @@ import com.lyfter.backend.payload.response.MessageResponse;
 import com.lyfter.backend.service.PostCRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
@@ -20,6 +21,7 @@ public class PostController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getAllPosts() {
         try {
             return ResponseEntity.ok(postCRUDService.getAllPosts());
@@ -29,6 +31,7 @@ public class PostController {
     }
 
     @GetMapping("/find")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getPostById(@RequestParam int id) {
         try {
             return ResponseEntity.ok(postCRUDService.getPostById(id));
@@ -38,6 +41,7 @@ public class PostController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> addPost(@RequestBody PostRequest postRequest) {
         try {
             postCRUDService.createPost(postRequest);
@@ -48,6 +52,7 @@ public class PostController {
     }
 
     @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deletePostById(@RequestParam int id) {
         try {
             postCRUDService.deletePost(id);
