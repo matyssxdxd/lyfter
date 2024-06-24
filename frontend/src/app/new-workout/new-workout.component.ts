@@ -8,11 +8,12 @@ import { StorageService } from '../_services/storage.service';
 import { Router } from '@angular/router';
 import { MobileNavigationComponent } from '../mobile-navigation/mobile-navigation.component';
 import { MatIconModule } from '@angular/material/icon';
+import { DesktopNavigationComponent } from '../desktop-navigation/desktop-navigation.component';
 
 @Component({
   selector: 'app-new-workout',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MobileNavigationComponent, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MobileNavigationComponent, MatIconModule, DesktopNavigationComponent],
   templateUrl: './new-workout.component.html',
   styleUrls: ['./new-workout.component.css']
 })

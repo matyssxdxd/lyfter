@@ -8,11 +8,12 @@ import { Workout } from '../_interfaces/workout';
 import { Exercise } from '../_interfaces/exercise';
 import { WorkoutLogService } from '../_services/workout-log.service';
 import { MobileNavigationComponent } from '../mobile-navigation/mobile-navigation.component';
+import { DesktopNavigationComponent } from '../desktop-navigation/desktop-navigation.component';
 
 @Component({
   selector: 'app-log',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MobileNavigationComponent],
+  imports: [CommonModule, ReactiveFormsModule, MobileNavigationComponent, DesktopNavigationComponent],
   templateUrl: './log.component.html',
   styleUrls: ['./log.component.css']
 })

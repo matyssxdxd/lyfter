@@ -1,12 +1,13 @@
+<app-desktop-navigation class="hidden md:block" />
 <div class="bg-slate-950 h-full text-white overflow-scroll">
-  <div class="container mx-auto px-4 py-20 md:py-0">
+  <div class="container mx-auto px-4 py-20 md:py-10">
     <div class="flex justify-center w-full mb-4">
         <div *ngIf="currentUser">
             <p>{{ currentUser.username }}</p>
             <p>{{ currentUser.email }}</p>
         </div>
     </div>
-    <button (click)="logout()">Logout</button>
+    <button class="bg-red-600 px-2 py-4 w-full rounded-md font-bold text-lg" (click)="logout()">Logout</button>
   </div>
 </div>
 <app-mobile-navigation class="md:hidden" />

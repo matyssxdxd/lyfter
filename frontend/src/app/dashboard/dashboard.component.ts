@@ -7,11 +7,12 @@ import { WorkoutLog } from '../_interfaces/workout-log';
 import { WorkoutLogGet } from '../_interfaces/workout-log-get';
 import { MatIconModule } from '@angular/material/icon';
 import { MobileNavigationComponent } from '../mobile-navigation/mobile-navigation.component';
+import { DesktopNavigationComponent } from '../desktop-navigation/desktop-navigation.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, MobileNavigationComponent, MatIconModule],
+  imports: [CommonModule, RouterModule, MobileNavigationComponent, MatIconModule, DesktopNavigationComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })

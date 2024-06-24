@@ -1,5 +1,6 @@
+<app-desktop-navigation class="hidden md:block" />
 <div class="bg-slate-950 h-full text-white overflow-scroll">
-  <div class="container mx-auto px-4 py-20 md:py-0">
+  <div class="container mx-auto px-4 py-20 md:py-10">
     <form class="flex flex-col items-center" [formGroup]="form" (ngSubmit)="createWorkout()">
       <p class="text-lg font-bold mb-4">Create a new workout</p>
       <input class="bg-slate-900 w-full placeholder:text-center p-2 rounded-md mb-4" type="text" formControlName="name" placeholder="Workout name">
