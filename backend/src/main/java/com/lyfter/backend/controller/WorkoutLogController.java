@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ public class WorkoutLogController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> addWorkoutLog(@Valid @RequestBody WorkoutLogRequest request) {
         try {
             workoutLogCRUDService.saveWorkoutLog(request);
@@ -34,6 +36,7 @@ public class WorkoutLogController {
     }
 
     @GetMapping("/find")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> findWorkoutLogByUserIdAndDate(@RequestParam int userId, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         try {
             return ResponseEntity.ok(workoutLogCRUDService.getWorkoutLogsByDateAndUserId(date, userId));
